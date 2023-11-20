@@ -6,7 +6,7 @@ from skimage import measure
 import trimesh
 import matplotlib.pyplot as plt
 
-def getTrainData(imageNum):
+def getImageTrainData(imageNum):
     scaler = MinMaxScaler()
     
     path = f"AIsrc\BraTS2020_TrainingData\MICCAI_BraTS2020_TrainingData\BraTS20_Training_{imageNum}"
@@ -32,7 +32,8 @@ def getTrainData(imageNum):
 
     return flair, t1, t1ce, t2, mask
 
-def getValidationData(imageNum):
+
+def getImageValidationData(imageNum):
     scaler = MinMaxScaler()
     
     path = f"AIsrc\BraTS2020_ValidationData\MICCAI_BraTS2020_ValidationData\BraTS20_Validation_{imageNum}"
@@ -54,7 +55,6 @@ def getValidationData(imageNum):
     t2 = t2.astype("uint8")
 
     return flair, t1, t1ce, t2
-
 
 def getBrainContours(image):
     rows, cols, floors = image.shape
@@ -100,7 +100,24 @@ def create3DMesh(mask, vertColors = np.array([0,0,0]), alpha = 255):
     return mesh
 
 def create3DBrainWithTumor_Train(file):
-    flair, t1, t1ce, t2, mask = getTrainData(file)
+    flair, t1, t1ce, t2, mask = getImageTrainData(file)
+    
+    brainContour = getBrainContours(t1)
+
+    necotric, fluid, tumor = getBooleanMasks(mask)
+
+    brainContourMesh = create3DMesh(brainContour==255, alpha=70)
+    necotricMesh = create3DMesh(necotric, vertColors=np.array([255,0,0]), alpha=150)
+    fluidMesh = create3DMesh(fluid, vertColors=np.array([255,255,0]), alpha=100)
+    tumorMesh = create3DMesh(tumor, vertColors=np.array([0,0,255]), alpha=115)
+    meshes = [necotricMesh, tumorMesh, fluidMesh, brainContourMesh]
+    combined = trimesh.util.concatenate(meshes)
+    combined.export("test.obj")
+    combined.export("test.glb")
+    combined.export("test.stl")
+
+def render3DBrainWithTumor_Train(file):
+    flair, t1, t1ce, t2, mask = getImageTrainData(file)
     
     brainContour = getBrainContours(t1)
 
@@ -113,9 +130,6 @@ def create3DBrainWithTumor_Train(file):
     meshes = [necotricMesh, tumorMesh, fluidMesh, brainContourMesh]
     combined = trimesh.util.concatenate(meshes)
     combined.show()
-    combined.export("test.obj")
-    combined.export("test.glb")
-    combined.export("test.stl")
 
 def getFrame(image, i, path):
     cv2.imwrite(path,image[:,:,i])
@@ -130,4 +144,4 @@ def getMask(image, i, path):
 if __name__ =="__main__":
     #flair, t1, t1ce, t2, mask = getTrainData("001")
     #getMask(mask, 50,"")
-    create3DBrainWithTumor_Train("186")
+    render3DBrainWithTumor_Train("186")
