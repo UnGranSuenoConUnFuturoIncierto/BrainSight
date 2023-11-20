@@ -4,6 +4,7 @@ import cv2
 from sklearn.preprocessing  import MinMaxScaler
 from skimage import measure
 import trimesh
+import matplotlib.pyplot as plt
 
 def getTrainData(imageNum):
     scaler = MinMaxScaler()
@@ -116,4 +117,17 @@ def create3DBrainWithTumor_Train(file):
     combined.export("test.glb")
     combined.export("test.stl")
 
-create3DBrainWithTumor_Train("186")
+def getFrame(image, i, path):
+    cv2.imwrite(path,image[:,:,i])
+
+def getMask(image, i, path):
+   plt.imshow(image[:, :, i])
+   plt.colorbar()
+   plt.savefig(path)
+
+
+
+if __name__ =="__main__":
+    flair, t1, t1ce, t2, mask = getTrainData("001")
+    getMask(mask, 50,"")
+    #create3DBrainWithTumor_Train("186")
