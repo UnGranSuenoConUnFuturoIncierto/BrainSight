@@ -75,19 +75,19 @@ def getBrainContours(image):
     return onlyContours
 
 def getBooleanMasks(mask):
-    onesMask = mask == 1
-    onesMask[:, :, -1] = False  
-    onesMask[:, :, 0] = False
+    necotric = mask == 1
+    necotric[:, :, -1] = False  
+    necotric[:, :, 0] = False
 
-    twosMask = mask == 2
-    twosMask[:, :, -1] = False
-    twosMask[:, :, 0] = False
+    fluid = mask == 2
+    fluid[:, :, -1] = False
+    fluid[:, :, 0] = False
     
-    foursMask = mask == 4
-    foursMask[:, :, -1] = False
-    foursMask[:, :, 0] = False
+    tumor = mask == 4
+    tumor[:, :, -1] = False
+    tumor[:, :, 0] = False
 
-    return onesMask, twosMask, foursMask
+    return necotric, fluid, tumor
 
 def create3DMesh(mask, vertColors = np.array([0,0,0]), alpha = 255):
     vertices, faces, normals, values = measure.marching_cubes(mask)
@@ -104,13 +104,13 @@ def create3DBrainWithTumor_Train(file):
     
     brainContour = getBrainContours(t1)
 
-    one, two, four = getBooleanMasks(mask)
+    necotric, fluid, tumor = getBooleanMasks(mask)
 
     brainContourMesh = create3DMesh(brainContour==255, alpha=70)
-    onesMesh = create3DMesh(one, vertColors=np.array([255,0,0]), alpha=150)
-    twosMesh = create3DMesh(two, vertColors=np.array([0,255,0]), alpha=100)
-    foursMesh = create3DMesh(four, vertColors=np.array([0,0,255]), alpha=115)
-    meshes = [onesMesh, foursMesh, twosMesh, brainContourMesh]
+    necotricMesh = create3DMesh(necotric, vertColors=np.array([255,0,0]), alpha=150)
+    fluidMesh = create3DMesh(fluid, vertColors=np.array([255,255,0]), alpha=100)
+    tumorMesh = create3DMesh(tumor, vertColors=np.array([0,0,255]), alpha=115)
+    meshes = [necotricMesh, tumorMesh, fluidMesh, brainContourMesh]
     combined = trimesh.util.concatenate(meshes)
     combined.show()
     combined.export("test.obj")
@@ -128,6 +128,6 @@ def getMask(image, i, path):
 
 
 if __name__ =="__main__":
-    flair, t1, t1ce, t2, mask = getTrainData("001")
-    getMask(mask, 50,"")
-    #create3DBrainWithTumor_Train("186")
+    #flair, t1, t1ce, t2, mask = getTrainData("001")
+    #getMask(mask, 50,"")
+    create3DBrainWithTumor_Train("186")
