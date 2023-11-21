@@ -54,4 +54,4 @@ def loadAndTrain(modelFile,batchSize=2):
     model.save('bratsSeg.keras')
 
 if __name__ == "__main__":
-    createAndTrain()
+    createAndTrain(8)
