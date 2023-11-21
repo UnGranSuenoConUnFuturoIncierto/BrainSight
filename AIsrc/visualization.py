@@ -99,7 +99,7 @@ def create3DMesh(mask, vertColors = np.array([0,0,0]), alpha = 255):
     mesh = trimesh.Trimesh(vertices = vertices, faces=faces, face_colors=colors)
     return mesh
 
-def create3DBrainWithTumor_Train(file):
+def create3DBrainWithTumor_Train(file, nameOfGLB):
     flair, t1, t1ce, t2, mask = getImageTrainData(file)
     
     brainContour = getBrainContours(t1)
@@ -112,9 +112,7 @@ def create3DBrainWithTumor_Train(file):
     tumorMesh = create3DMesh(tumor, vertColors=np.array([0,0,255]), alpha=115)
     meshes = [necotricMesh, tumorMesh, fluidMesh, brainContourMesh]
     combined = trimesh.util.concatenate(meshes)
-    combined.export("test.obj")
-    combined.export("test.glb")
-    combined.export("test.stl")
+    combined.export(nameOfGLB,"glb")
 
 def render3DBrainWithTumor_Train(file):
     flair, t1, t1ce, t2, mask = getImageTrainData(file)
@@ -140,8 +138,5 @@ def getMask(image, i, path):
    plt.savefig(path)
 
 
-
 if __name__ =="__main__":
-    #flair, t1, t1ce, t2, mask = getTrainData("001")
-    #getMask(mask, 50,"")
-    render3DBrainWithTumor_Train("186")
+    create3DBrainWithTumor_Train("005", "xd.xml")

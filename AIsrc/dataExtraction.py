@@ -71,14 +71,12 @@ if __name__ =="__main__":
         numImagePath = fullPath.split("_")[-2]
 
         flair, t1, t1ce, t2, mask = getTrainData(numImagePath)
+        
         combinedAIData = combineAIData(flair,t1ce,t2)
-        
         combinedAIData = cropAIData(combinedAIData)
+        
         mask = cropAIData(mask)
-        
-        val, counts = np.unique(mask, return_counts=True)
-        
-        if (1 - (counts[0]/counts.sum())) > 0.01:  #At least 1% useful volume with labels that are not 0
-            mask = to_categorical(mask, num_classes=4)
-            np.save('AIsrc/dataForAI/allImages/image_'+numImagePath+'.npy', combinedAIData)
-            np.save('AIsrc/dataForAI/allMasks/image_'+numImagePath+'.npy', mask)
+        mask = to_categorical(mask, num_classes=4)
+
+        np.save('AIsrc/dataForAI/allImagesTrain/image_'+numImagePath+'.npy', combinedAIData)
+        np.save('AIsrc/dataForAI/allMasksTrain/mask_'+numImagePath+'.npy', mask)
