@@ -107,10 +107,10 @@ def create3DBrainWithTumor_Train(file, nameOfGLB):
     necotric, fluid, tumor = getBooleanMasks(mask)
 
     brainContourMesh = create3DMesh(brainContour==255, alpha=70)
-    necotricMesh = create3DMesh(necotric, vertColors=np.array([255,0,0]), alpha=150)
+    necrotricMesh = create3DMesh(necotric, vertColors=np.array([255,0,0]), alpha=150)
     fluidMesh = create3DMesh(fluid, vertColors=np.array([255,255,0]), alpha=100)
     tumorMesh = create3DMesh(tumor, vertColors=np.array([0,0,255]), alpha=115)
-    meshes = [necotricMesh, tumorMesh, fluidMesh, brainContourMesh]
+    meshes = [necrotricMesh, tumorMesh, fluidMesh, brainContourMesh]
     combined = trimesh.util.concatenate(meshes)
     combined.export(nameOfGLB,"glb")
 
@@ -122,12 +122,14 @@ def render3DBrainWithTumor_Train(file):
     necotric, fluid, tumor = getBooleanMasks(mask)
 
     brainContourMesh = create3DMesh(brainContour==255, alpha=70)
-    necotricMesh = create3DMesh(necotric, vertColors=np.array([255,0,0]), alpha=150)
+    necrotricMesh = create3DMesh(necotric, vertColors=np.array([255,0,0]), alpha=150)
     fluidMesh = create3DMesh(fluid, vertColors=np.array([255,255,0]), alpha=100)
     tumorMesh = create3DMesh(tumor, vertColors=np.array([0,0,255]), alpha=115)
-    meshes = [necotricMesh, tumorMesh, fluidMesh, brainContourMesh]
+    meshes = [necrotricMesh, tumorMesh, fluidMesh, brainContourMesh]
     combined = trimesh.util.concatenate(meshes)
     combined.show()
+
+
 
 def getFrame(image, i, path):
     cv2.imwrite(path,image[:,:,i])
@@ -139,4 +141,5 @@ def getMask(image, i, path):
 
 
 if __name__ =="__main__":
-    render3DBrainWithTumor_Train("005")
+    for i in range (1,11):
+        create3DBrainWithTumor_Train("0"*(3-len(str(i)))+ str(i),"0"*(3-len(str(i)))+ str(i)+".glb")
