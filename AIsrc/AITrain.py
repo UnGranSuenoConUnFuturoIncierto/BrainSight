@@ -42,7 +42,7 @@ def createAndTrain(batchSize=2):
     model = ConvUnet(128,128,128,3,4)
     model.compile(optimizer=optimizer, loss='MeanSquaredError', metrics=metrics)
 
-    history = model.fit(trainImgsLoaderObj, steps_per_epoch=stepsEpochTrain, epochs=1, verbose=1, validation_data=valImgsLoaderObj, validation_steps=stepsEpochValidation)
+    history = model.fit(trainImgsLoaderObj, steps_per_epoch=stepsEpochTrain, epochs=80, verbose=1, validation_data=valImgsLoaderObj, validation_steps=stepsEpochValidation)
 
     model.save('bratsSeg.keras')
 
