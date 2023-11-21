@@ -40,7 +40,7 @@ def createAndTrain(batchSize=2):
     stepsEpochValidation = len(valImgsDirList)//batchSize
 
     model = ConvUnet(128,128,128,3,4)
-    model.compile(optimizer=optimizer, loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False), metrics=metrics)
+    model.compile(optimizer=optimizer, loss=tf.keras.losses.SparseCategoricalCrossentropy(), metrics=metrics)
 
     history = model.fit(trainImgsLoaderObj, steps_per_epoch=stepsEpochTrain, epochs=1, verbose=1, validation_data=valImgsLoaderObj, validation_steps=stepsEpochValidation)
 
