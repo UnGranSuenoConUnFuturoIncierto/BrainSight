@@ -139,4 +139,4 @@ def getMask(image, i, path):
 
 
 if __name__ =="__main__":
-    create3DBrainWithTumor_Train("005", "xd.xml")
+    render3DBrainWithTumor_Train("005")
