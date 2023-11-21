@@ -161,4 +161,5 @@ cython_debug/
 
 BraTS2020_TrainingData/
 BraTS2020_ValidationData/
-AIsrc/dataForAI/
+AIsrc/dataForAI/allImagesTrain/
+AIsrc/dataForAI/allMasksTrain/
