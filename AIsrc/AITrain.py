@@ -49,20 +49,9 @@ def loadAndTrain(modelFile,batchSize=2):
     stepsEpochTrain = len(trainImgsDirList)//batchSize
     stepsEpochValidation = len(valImgsDirList)//batchSize
 
-    history = model.fit(trainImgsLoaderObj, steps_per_epoch=stepsEpochTrain, epochs=5, verbose=1, validation_data=valImgsLoaderObj, validation_steps=stepsEpochValidation)
+    history = model.fit(trainImgsLoaderObj, steps_per_epoch=stepsEpochTrain, epochs=1, verbose=1, validation_data=valImgsLoaderObj, validation_steps=stepsEpochValidation)
 
     model.save('bratsSeg.keras')
 
 if __name__ == "__main__":
-    model = keras.models.load_model("bratsSeg.hdf5")
-
-    img = np.load("AIsrc/dataForAI/allImagesValidation/image_351.npy")
-    img = np.expand_dims(img, axis=0)
-
-    a = model.predict(img)
-    a = np.argmax(a, axis=4)[0,:,:,:]
-    import matplotlib.pylab as plt
-    plt.imshow(a[:,:,30])
-    plt.show()
-     
-   
+    createAndTrain()

@@ -60,10 +60,6 @@ def maskToCategorical(mask):
 
 
 if __name__ =="__main__":
-    import os
-    print(os.getcwd())
-
-
     t2_list = sorted(glob.glob('AIsrc/BraTS2020_TrainingData/MICCAI_BraTS2020_TrainingData/*/*t2.nii'))
     t1ce_list = sorted(glob.glob('AIsrc/BraTS2020_TrainingData/MICCAI_BraTS2020_TrainingData/*/*t1ce.nii'))
     flair_list = sorted(glob.glob('AIsrc/BraTS2020_TrainingData/MICCAI_BraTS2020_TrainingData/*/*flair.nii'))
